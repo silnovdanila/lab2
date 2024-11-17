@@ -1,39 +1,40 @@
 #include "Kafe.h"
 #include <stdio.h>
 
-struct Dish {
-	int price;
-	char name[20];
-};
-struct Employee {
-	int salary;
-	char job[20];
-	char name[20];
-};
-struct Order {
-	struct Dish Dishes[20];
-};
-struct Chef {
-	struct Employee chef;
-	struct Dish currentDish;
-};
-struct Menu{
-	struct Dish hotDishes[10];
-	struct Dish desserts[10];
-	struct Dish drinks[10];
-};
-struct DiscountCard {
-	int id;
-	char name[20];
-	double discount;
-	struct Order historyOForders[20];
-};
-struct Client {
-	struct Order currentOrder;
-	struct DiscountCard Card;
-};
-struct Waiter {
-	struct Employee waiter;
-	struct Client currentClient;
-	struct Order currentOrder;
-};
+struct Dish;
+struct Employee;
+struct Order;
+struct Chef;
+struct Menu;
+struct DiscountCard;
+struct Waiter;
+struct Client;
+
+void initMenu(struct Menu menu) {
+	menu.dessertAmount = 0;
+	menu.drinkAmount = 0;
+	menu.hotDishAmount = 0;
+}
+void addHotDish(struct Menu menu, struct Dish dish) {
+	menu.hotDishes[menu.hotDishAmount++] = dish;
+}
+void addDessert(struct Menu menu, struct Dish dish) {
+	menu.desserts[menu.dessertAmount++] = dish;
+}
+void addDrink(struct Menu menu, struct Dish dish) {
+	menu.drinks[menu.drinkAmount++] = dish;
+}
+void menuOut(struct Menu menu) {
+	printf("\nHot Dishes:\n");
+	for (int i = 0; i < menu.hotDishAmount; i++) {
+		printf("%d - %s", i + 1, menu.hotDishes[i].name);
+	}
+	printf("\nDesserts:\n");
+	for (int i = 0; i < menu.dessertAmount; i++) {
+		printf("%d - %s", i + 1 + menu.hotDishAmount, menu.desserts[i].name);
+	}
+	printf("\nDrinks:\n");
+	for (int i = 0; i < menu.drinkAmount; i++) {
+		printf("%d - %s", i + 1 + menu.hotDishAmount + menu.dessertAmount, menu.drinks[i].name);
+	}
+}
