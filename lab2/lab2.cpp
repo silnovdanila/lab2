@@ -19,8 +19,8 @@ int main()
     struct Employee waiter = { 22000, "Waiter" };
     struct Waiter waiter1 = { "Anna", waiter, NULL, NULL};
     struct Client client1 = { "Vladimir", getNewCard(), NULL };
-    int order[20];
+    int order[20], dish;
     getOrder(client1, waiter1, povar1, menu, order);
-    makeOrder(&client1, &waiter1, &povar1, menu, order);
-    printf("faf");
+    dish = madeOrder(&client1, &waiter1, &povar1, menu, order);
+    payClient(&client1, dish);
 }

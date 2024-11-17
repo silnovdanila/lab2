@@ -31,40 +31,49 @@ void addDrink(Menu *menu, Dish dish) {
 	menu->drinkAmount += 1;
 }
 void menuOut(Menu menu) {
-	printf("\n\n   MENU");
+	printf("\n\n\tMENU");
 	printf("\nHot Dishes:\n");
 	for (int i = 0; i < menu.hotDishAmount; i++) {
-		printf("%d - %s\n", i + 1, menu.hotDishes[i].name);
+		printf("%d - %s\t%d\n", i + 1, menu.hotDishes[i].name, menu.hotDishes[i].price);
 	}
 	printf("\nDesserts:\n");
 	for (int i = 0; i < menu.dessertAmount; i++) {
-		printf("%d - %s\n", i + 1 + menu.hotDishAmount, menu.desserts[i].name);
+		printf("%d - %s\t%d\n", i + 1 + menu.hotDishAmount, menu.desserts[i].name, menu.desserts[i].price);
 	}
 	printf("\nDrinks:\n");
 	for (int i = 0; i < menu.drinkAmount; i++) {
-		printf("%d - %s\n", i + 1 + menu.hotDishAmount + menu.dessertAmount, menu.drinks[i].name);
+		printf("%d - %s \t%d\n", i + 1 + menu.hotDishAmount + menu.dessertAmount, menu.drinks[i].name, menu.drinks[i].price);
 	}
 }
 struct DiscountCard getNewCard() {
 	DiscountCard card = { id++, 0, NULL };
 	return card;
 }
-void makeOrder(Client* client, Waiter* waiter, Chef* povar,Menu menu, int sp[]) {
-	Dish dishes[20];
+int madeOrder(Client* client, Waiter* waiter, Chef* povar, Menu menu, int sp[]) {
+	struct Dish dishes[20];
 	int dish = 0;
 	for (int i = 0; sp[i] != 0; i++) {
 		if (sp[i] <= menu.hotDishAmount) {
-			dishes[dish++] = menu.hotDishes[sp[i]];
+			dishes[dish] = menu.hotDishes[sp[i] - 1];
 		}
 		else if (sp[i] <= menu.hotDishAmount + menu.dessertAmount) {
-			dishes[dish++] = menu.desserts[sp[i] - menu.hotDishAmount];
+			dishes[dish] = menu.desserts[sp[i] - menu.hotDishAmount - 1];
 		}
 		else {
-			dishes[dish++] = menu.drinks[sp[i] - menu.hotDishAmount - menu.dessertAmount];
+			dishes[dish] = menu.drinks[sp[i] - menu.hotDishAmount - menu.dessertAmount - 1];
 		}
+		dish += 1;
 	}
-	struct Order newOrder = {dishes};
+	struct Order newOrder = { NULL };
+	int i = 0;
+	while (i != dish) {
+		newOrder.Dishes[i] = &dishes[i];
+		i++;
+	}
 	client->currentOrder = newOrder;
+	waiter->currentOrder = newOrder;
+	povar->currentOrder = newOrder;
+	return dish;
 }
 void getOrder(Client client, Waiter waiter, Chef povar, Menu menu, int order[]) {
 	int num;
@@ -72,11 +81,9 @@ void getOrder(Client client, Waiter waiter, Chef povar, Menu menu, int order[]) 
 	printf("\nYour waiter - %s", waiter.name);
 	printf("\nYour chef - %s", povar.name);
 	printf("\nHere is the menu");
-	again:
 	menuOut(menu);
 	printf("\nHow many dishes ypu want to order. Enter number < 20 - ");
 	scanf("%d", &num);
-	if (num <= 0 || num >= 20) goto again;
 	printf("\nTo place an order, enter the number of items you want to order - ");
 	int i = 0;
 	for (i; i < num; i++) {
@@ -84,6 +91,21 @@ void getOrder(Client client, Waiter waiter, Chef povar, Menu menu, int order[]) 
 	}
 	order[i] = 0;
 }
-void payClient(Client client) {
-
+int orderSum(Client *client, int dish) {
+	int sum = 0;
+	struct Client *client1 = client;
+	printf("\nYour order: ");
+	for (int i = 0; i < dish; i++) {
+		printf("%s ", &client1->currentOrder.Dishes[i]->name);
+		sum += client1->currentOrder.Dishes[i]->price;
+	}
+	return sum;
+}
+void payClient(Client *client, int dish) {
+	int sum;
+	sum = orderSum(client, dish);
+	printf("\nThe price of order is %.2lf rub, your discount is %.2lf\%", sum * (1 - client->Card.discount), client->Card.discount);
+	printf("\nEnter the card details for the payment: ");
+	scanf("%d", &sum);
+	printf("\nThe payment was successful");
 }
