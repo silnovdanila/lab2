@@ -8,14 +8,14 @@ struct Dish {
 struct Employee {
 	int salary;
 	char job[20];
-	char name[20];
 };
 struct Order {
-	struct Dish Dishes[20];
+	struct Dish *Dishes[20];
 };
 struct Chef {
+	char name[20];
 	struct Employee chef;
-	struct Dish currentDish;
+	struct Order currentOrder;
 };
 struct Menu {
 	struct Dish hotDishes[10];
@@ -27,15 +27,16 @@ struct Menu {
 };
 struct DiscountCard {
 	int id;
-	char name[20];
 	double discount;
 	struct Order historyOForders[20];
 };
 struct Client {
-	struct Order currentOrder;
+	char name[20];
 	struct DiscountCard Card;
+	struct Order currentOrder;
 };
 struct Waiter {
+	char name[20];
 	struct Employee waiter;
 	struct Client currentClient;
 	struct Order currentOrder;
@@ -45,3 +46,7 @@ void addHotDish(struct Menu *menu, struct Dish dish);
 void addDessert(struct Menu *menu, struct Dish dish);
 void addDrink(struct Menu *menu, struct Dish dish);
 void menuOut(struct Menu menu);
+struct DiscountCard getNewCard();
+void makeOrder(Client* client, Waiter* waiter, Chef* povar, Menu menu, int sp[]);
+void getOrder(Client client, Waiter waiter, Chef povar, Menu menu, int order[]);
+void payClient(Client client);
