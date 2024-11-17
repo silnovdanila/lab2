@@ -40,8 +40,8 @@ struct Waiter {
 	struct Client currentClient;
 	struct Order currentOrder;
 };
-void initMenu(struct Menu menu);
-void addHotDish(struct Menu menu, struct Dish dish);
-void addDessert(struct Menu menu, struct Dish dish);
-void addDrink(struct Menu menu, struct Dish dish);
+void initMenu(struct Menu *menu);
+void addHotDish(struct Menu *menu, struct Dish dish);
+void addDessert(struct Menu *menu, struct Dish dish);
+void addDrink(struct Menu *menu, struct Dish dish);
 void menuOut(struct Menu menu);

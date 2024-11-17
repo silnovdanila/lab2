@@ -10,31 +10,34 @@ struct DiscountCard;
 struct Waiter;
 struct Client;
 
-void initMenu(struct Menu menu) {
-	menu.dessertAmount = 0;
-	menu.drinkAmount = 0;
-	menu.hotDishAmount = 0;
+void initMenu(struct Menu *menu) {
+	menu->dessertAmount = 0;
+	menu->drinkAmount = 0;
+	menu->hotDishAmount = 0;
 }
-void addHotDish(struct Menu menu, struct Dish dish) {
-	menu.hotDishes[menu.hotDishAmount++] = dish;
+void addHotDish(Menu *menu, Dish dish) {
+	menu->hotDishes[menu->hotDishAmount] = dish;
+	menu->hotDishAmount += 1;
 }
-void addDessert(struct Menu menu, struct Dish dish) {
-	menu.desserts[menu.dessertAmount++] = dish;
+void addDessert(Menu *menu, Dish dish) {
+	menu->desserts[menu->dessertAmount] = dish;
+	menu->dessertAmount += 1;
 }
-void addDrink(struct Menu menu, struct Dish dish) {
-	menu.drinks[menu.drinkAmount++] = dish;
+void addDrink(Menu *menu, Dish dish) {
+	menu->drinks[menu->drinkAmount] = dish;
+	menu->drinkAmount += 1;
 }
-void menuOut(struct Menu menu) {
+void menuOut(Menu menu) {
 	printf("\nHot Dishes:\n");
 	for (int i = 0; i < menu.hotDishAmount; i++) {
-		printf("%d - %s", i + 1, menu.hotDishes[i].name);
+		printf("%d - %s\n", i + 1, menu.hotDishes[i].name);
 	}
 	printf("\nDesserts:\n");
 	for (int i = 0; i < menu.dessertAmount; i++) {
-		printf("%d - %s", i + 1 + menu.hotDishAmount, menu.desserts[i].name);
+		printf("%d - %s\n", i + 1 + menu.hotDishAmount, menu.desserts[i].name);
 	}
 	printf("\nDrinks:\n");
 	for (int i = 0; i < menu.drinkAmount; i++) {
-		printf("%d - %s", i + 1 + menu.hotDishAmount + menu.dessertAmount, menu.drinks[i].name);
+		printf("%d - %s\n", i + 1 + menu.hotDishAmount + menu.dessertAmount, menu.drinks[i].name);
 	}
 }
