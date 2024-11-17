@@ -1,6 +1,5 @@
 #pragma once
 
-
 struct Dish {
 	int price;
 	char name[20];
@@ -29,6 +28,7 @@ struct DiscountCard {
 	int id;
 	double discount;
 	struct Order historyOForders[20];
+	int orders;
 };
 struct Client {
 	char name[20];
@@ -51,3 +51,6 @@ int madeOrder(Client* client, Waiter* waiter, Chef* povar, Menu menu, int sp[]);
 void getOrder(Client client, Waiter waiter, Chef povar, Menu menu, int order[]);
 void payClient(Client *client, int dish);
 int orderSum(Client *client, int dish);
+struct Client getNewClient();
+void addHistory(Client* client);
+double getDiscount(double discount);

@@ -18,9 +18,23 @@ int main()
     struct Chef povar2 = { "Gregory", povar, NULL };
     struct Employee waiter = { 22000, "Waiter" };
     struct Waiter waiter1 = { "Anna", waiter, NULL, NULL};
-    struct Client client1 = { "Vladimir", getNewCard(), NULL };
+
     int order[20], dish;
+
+    struct Client client1 = getNewClient();
     getOrder(client1, waiter1, povar1, menu, order);
     dish = madeOrder(&client1, &waiter1, &povar1, menu, order);
     payClient(&client1, dish);
+    addHistory(&client1);
+
+    struct Client client2 = getNewClient();
+    getOrder(client2, waiter1, povar2, menu, order);
+    dish = madeOrder(&client2, &waiter1, &povar2, menu, order);
+    payClient(&client2, dish);
+    addHistory(&client2);
+
+    getOrder(client1, waiter1, povar1, menu, order);
+    dish = madeOrder(&client1, &waiter1, &povar1, menu, order);
+    payClient(&client1, dish);
+    addHistory(&client1);
 }

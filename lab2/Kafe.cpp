@@ -46,7 +46,7 @@ void menuOut(Menu menu) {
 	}
 }
 struct DiscountCard getNewCard() {
-	DiscountCard card = { id++, 0, NULL };
+	DiscountCard card = { id++, 0, NULL, 0 };
 	return card;
 }
 int madeOrder(Client* client, Waiter* waiter, Chef* povar, Menu menu, int sp[]) {
@@ -108,4 +108,25 @@ void payClient(Client *client, int dish) {
 	printf("\nEnter the card details for the payment: ");
 	scanf("%d", &sum);
 	printf("\nThe payment was successful");
+}
+struct Client getNewClient() {
+	struct Client client;
+	printf("\nWelcome to the cafe ");
+	printf("\nPlease, enter your name - ");
+	scanf("%s", client.name);
+	client.Card = getNewCard();
+	return client;
+}
+double getDiscount(double discount) {
+	if (discount >= 0.089) {
+		return 0.1;
+	}
+	else {
+		return discount += 0.01;
+	}
+}
+void addHistory(Client *client) {
+	client->Card.discount = getDiscount(client->Card.discount);
+	client->Card.historyOForders[client->Card.orders] = client->currentOrder;
+	client->Card.orders += 1;
 }
